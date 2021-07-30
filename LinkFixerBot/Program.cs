@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -13,7 +12,7 @@ namespace LinkFixerBot
         public readonly string GatewayToken = File.ReadAllText("token.ignore");
         private DiscordSocketClient _client;
 
-        static void Main(string[] args) => new Program().StartAsync().GetAwaiter().GetResult();
+        static void Main() => new Program().StartAsync().GetAwaiter().GetResult();
 
         public async Task StartAsync()
         {
@@ -49,9 +48,10 @@ namespace LinkFixerBot
             await Task.Delay(-1);
         }
 
-        private async Task SetupAsync()
+        private Task SetupAsync()
         {
             _client.MessageReceived += FixMessageHandler;
+            return Task.CompletedTask;
         }
 
         private async Task FixMessageHandler(SocketMessage message)
